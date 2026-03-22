@@ -134,6 +134,14 @@ export async function getResume() {
   return (await get(STORAGE_KEYS.RESUME_TEXT)) || '';
 }
 
+export async function getResumeFileName() {
+  return (await get(STORAGE_KEYS.RESUME_FILE_NAME)) || '';
+}
+
+export async function setResumeFileName(name) {
+  return set(STORAGE_KEYS.RESUME_FILE_NAME, name || '');
+}
+
 export async function getSessionLang() {
   return (await get(STORAGE_KEYS.SESSION_LANG)) || null;
 }

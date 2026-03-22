@@ -68,11 +68,49 @@
         <span>📄</span> Your Resume
       </h2>
       <p class="text-xs text-gray-400 -mt-1">
-        Used to generate tailored cover letters. Stored locally in your browser.
+        Upload a PDF — text is extracted and stored locally. Used for Cover Letter generation.
       </p>
-      <textarea id="opt-resume" rows="10"
-        placeholder="Paste your full resume here. Include your name, work experience, skills, and education..."
-        class="w-full text-sm border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-none leading-relaxed"></textarea>
+
+      <!-- Upload zone -->
+      <div id="resume-upload-zone"
+        class="border-2 border-dashed border-gray-200 hover:border-indigo-400 rounded-xl p-8 text-center cursor-pointer transition select-none">
+        <div id="resume-upload-idle" class="space-y-2">
+          <div class="text-3xl">📎</div>
+          <p class="text-sm text-gray-600 font-medium">Click or drag PDF here</p>
+          <p class="text-xs text-gray-400">Only <code class="bg-gray-100 px-1 rounded">.pdf</code> files accepted</p>
+        </div>
+        <div id="resume-uploading" class="hidden items-center justify-center gap-2 text-indigo-600">
+          <span class="text-lg spin">⏳</span>
+          <p class="text-sm font-medium">Extracting text…</p>
+        </div>
+        <div id="resume-upload-success" class="hidden space-y-1">
+          <div class="text-2xl">✅</div>
+          <p id="resume-file-name" class="text-sm font-semibold text-gray-800 truncate max-w-xs mx-auto"></p>
+          <p class="text-xs text-green-600">Text extracted successfully</p>
+        </div>
+        <div id="resume-upload-error" class="hidden space-y-1">
+          <div class="text-2xl">❌</div>
+          <p id="resume-error-msg" class="text-sm text-red-500"></p>
+        </div>
+      </div>
+      <input type="file" id="resume-file-input" accept=".pdf,application/pdf" class="hidden" />
+
+      <!-- Extracted text preview (read-only, for verification) -->
+      <div id="resume-text-section" class="hidden space-y-2">
+        <label class="block text-xs font-medium text-gray-600">
+          Extracted text <span class="text-gray-400 font-normal">(auto-saved)</span>
+        </label>
+        <textarea id="opt-resume" rows="6" readonly
+          class="w-full text-xs border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 text-gray-600 resize-none leading-relaxed"></textarea>
+      </div>
+
+      <!-- Remove button -->
+      <div id="resume-remove-section" class="hidden">
+        <button id="resume-remove-btn"
+          class="text-xs text-red-500 hover:text-red-700 transition font-medium">
+          🗑 Remove resume
+        </button>
+      </div>
     </section>
 
     <!-- Language Card -->

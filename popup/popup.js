@@ -1,19 +1,19 @@
 /**
  * popup/popup.js
- * Compact extension popup — recent history + resume preview + quick actions.
+ * Compact extension popup — recent history + resume status + quick actions.
  */
 
-import { MESSAGE_TYPES, RESUME_PREVIEW_LENGTH } from '../shared/constants.js';
+import { MESSAGE_TYPES } from '../shared/constants.js';
 import { t, getCurrentLanguage } from '../shared/i18n.js';
-import { getResume } from '../shared/storage.js';
+import { getResume, getResumeFileName } from '../shared/storage.js';
 
 // ─── DOM Refs ──────────────────────────────────────────────────────────────────
 
 const $openText       = document.getElementById('popup-open-text');
 const $title          = document.getElementById('popup-title');
-const $resumeHeading  = document.getElementById('popup-resume-heading');
-const $resumeContent  = document.getElementById('popup-resume-content');
-const $noResume       = document.getElementById('popup-no-resume');
+const $resumeHeading = document.getElementById('popup-resume-heading');
+const $hasResume     = document.getElementById('popup-has-resume');
+const $noResume      = document.getElementById('popup-no-resume');
 const $historyHeading = document.getElementById('popup-history-heading');
 const $historyList    = document.getElementById('popup-history-list');
 const $noHistory     = document.getElementById('popup-no-history');
@@ -33,10 +33,10 @@ async function init() {
 
 function applyLabels() {
   $title.textContent          = t('app_name', currentLang);
-  $openText.textContent      = t('open_sidepanel', currentLang);
-  $resumeHeading.textContent  = t('resume_preview', currentLang);
+  $openText.textContent       = t('open_sidepanel', currentLang);
+  $resumeHeading.textContent  = t('resume', currentLang);
   $historyHeading.textContent = t('recent_analyses', currentLang);
-  $noResume.textContent      = t('no_resume', currentLang);
+  $noResume.textContent       = t('no_resume', currentLang);
   $noHistory.textContent     = t('no_history', currentLang);
   $openSettings.textContent  = t('open_settings', currentLang);
 }
@@ -44,16 +44,15 @@ function applyLabels() {
 // ─── Resume Preview ────────────────────────────────────────────────────────────
 
 async function renderResume() {
-  const resume = await getResume();
-  if (!resume) {
-    $resumeContent.classList.add('hidden');
+  const [resume, fileName] = await Promise.all([getResume(), getResumeFileName()]);
+  if (!resume || !fileName) {
+    $hasResume.classList.add('hidden');
     $noResume.classList.remove('hidden');
     return;
   }
-  $resumeContent.classList.remove('hidden');
+  $hasResume.classList.remove('hidden');
   $noResume.classList.add('hidden');
-  const preview = resume.slice(0, RESUME_PREVIEW_LENGTH);
-  $resumeContent.textContent = preview + (resume.length > RESUME_PREVIEW_LENGTH ? '…' : '');
+  $hasResume.textContent = '✅ ' + fileName;
 }
 
 // ─── History List ──────────────────────────────────────────────────────────────

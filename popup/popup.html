@@ -47,15 +47,13 @@
         <span id="popup-open-text">Open Analysis</span>
       </button>
 
-      <!-- Resume Preview -->
+      <!-- Resume Status -->
       <div class="bg-gray-50 rounded-xl p-3">
-        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5 flex items-center gap-1">
-          <span>📄</span> <span id="popup-resume-heading">Resume Preview</span>
+        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 flex items-center gap-1">
+          <span>📄</span> <span id="popup-resume-heading">Resume</span>
         </h3>
-        <p id="popup-resume-content"
-          class="text-xs text-gray-600 leading-relaxed whitespace-pre-wrap break-words
-                 ${!0 ? 'max-h-16 overflow-y-auto' : ''}"></p>
-        <p id="popup-no-resume" class="hidden text-xs text-gray-400 italic"></p>
+        <p id="popup-has-resume" class="hidden text-xs text-green-600 font-medium"></p>
+        <p id="popup-no-resume" class="text-xs text-gray-400 italic"></p>
       </div>
 
       <!-- Recent History -->

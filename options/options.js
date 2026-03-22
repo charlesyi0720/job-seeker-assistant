@@ -1,48 +1,180 @@
 /**
  * options/options.js
- * Clean settings page — Resume and Language only.
- * No Supabase, no API keys, no developer features visible to end users.
+ * Settings page — API base URL, PDF resume upload, and language preference.
  */
 
 import { STORAGE_KEYS, LANGUAGE_PREF } from '../shared/constants.js';
-import { setAll, getAll } from '../shared/storage.js';
+import { setAll, getAll, getResume, getResumeFileName, setResumeFileName } from '../shared/storage.js';
 
-// DOM Refs
-const $apiBase    = document.getElementById('opt-api-base');
-const $resume     = document.getElementById('opt-resume');
-const $langSelect = document.getElementById('opt-lang-select');
-const $btnSave    = document.getElementById('opt-save');
-const $toast      = document.getElementById('opt-toast');
-const $toastText  = document.getElementById('opt-toast-text');
+// ─── PDF.js CDN ────────────────────────────────────────────────────────────────
+// Loaded lazily only when the user interacts with the upload zone.
+
+let pdfjsLib = null;
+
+async function loadPdfJs() {
+  if (pdfjsLib) return pdfjsLib;
+  return new Promise((resolve, reject) => {
+    if (document.getElementById('pdfjs-script')) {
+      pdfjsLib = window['pdfjs-dist/build/pdf'];
+      resolve(pdfjsLib);
+      return;
+    }
+    const script = document.createElement('script');
+    script.id = 'pdfjs-script';
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    script.onload = () => {
+      pdfjsLib = window['pdfjs-dist/build/pdf'];
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      resolve(pdfjsLib);
+    };
+    script.onerror = () => reject(new Error('Failed to load PDF.js'));
+    document.head.appendChild(script);
+  });
+}
+
+// ─── DOM Refs ──────────────────────────────────────────────────────────────────
+
+const $apiBase           = document.getElementById('opt-api-base');
+const $langSelect        = document.getElementById('opt-lang-select');
+const $btnSave           = document.getElementById('opt-save');
+const $toast             = document.getElementById('opt-toast');
+const $toastText         = document.getElementById('opt-toast-text');
+
+const $uploadZone        = document.getElementById('resume-upload-zone');
+const $fileInput         = document.getElementById('resume-file-input');
+const $idle              = document.getElementById('resume-upload-idle');
+const $uploading         = document.getElementById('resume-uploading');
+const $uploadSuccess     = document.getElementById('resume-upload-success');
+const $uploadError       = document.getElementById('resume-upload-error');
+const $fileName          = document.getElementById('resume-file-name');
+const $errorMsg         = document.getElementById('resume-error-msg');
+const $textSection       = document.getElementById('resume-text-section');
+const $resumeText        = document.getElementById('opt-resume');
+const $removeSection     = document.getElementById('resume-remove-section');
+const $removeBtn         = document.getElementById('resume-remove-btn');
+
+// ─── Upload helpers ────────────────────────────────────────────────────────────
+
+function showUploadState(state) {
+  [$idle, $uploading, $uploadSuccess, $uploadError].forEach(el => {
+    el.classList.add('hidden');
+    el.classList.remove('flex');
+  });
+  switch (state) {
+    case 'idle':
+      $idle.classList.remove('hidden');
+      break;
+    case 'uploading':
+      $uploading.classList.remove('hidden');
+      $uploading.classList.add('flex');
+      break;
+    case 'success':
+      $uploadSuccess.classList.remove('hidden');
+      break;
+    case 'error':
+      $uploadError.classList.remove('hidden');
+      break;
+  }
+}
+
+async function extractTextFromPdf(file) {
+  const pdfjs = await loadPdfJs();
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjs.getDocument({ data: arrayBuffer }).promise;
+  const pageTexts = [];
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    pageTexts.push(content.items.map(item => item.str).join(' '));
+  }
+  return pageTexts.join('\n\n').trim();
+}
+
+async function handleFile(file) {
+  if (!file) return;
+  if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
+    showUploadState('error');
+    $errorMsg.textContent = 'Only PDF files are supported.';
+    return;
+  }
+  showUploadState('uploading');
+  try {
+    const text = await extractTextFromPdf(file);
+    if (!text || text.trim().length < 20) {
+      showUploadState('error');
+      $errorMsg.textContent =
+        'Could not extract enough text from this PDF. It may be a scanned image (not text-based).';
+      return;
+    }
+    // Save text + filename
+    await setAll({
+      [STORAGE_KEYS.RESUME_TEXT]: text,
+      [STORAGE_KEYS.RESUME_FILE_NAME]: file.name,
+    });
+    // Update UI
+    $fileName.textContent = file.name;
+    $resumeText.value = text;
+    $textSection.classList.remove('hidden');
+    $removeSection.classList.remove('hidden');
+    showUploadState('success');
+    toast(`Resume saved! (${text.length} chars extracted)`);
+  } catch (err) {
+    console.error('[JSE Settings] PDF extraction failed:', err);
+    showUploadState('error');
+    $errorMsg.textContent = `Failed: ${err.message}`;
+  }
+}
+
+async function removeResume() {
+  await setAll({
+    [STORAGE_KEYS.RESUME_TEXT]: '',
+    [STORAGE_KEYS.RESUME_FILE_NAME]: '',
+  });
+  $resumeText.value = '';
+  $textSection.classList.add('hidden');
+  $removeSection.classList.add('hidden');
+  showUploadState('idle');
+  toast('Resume removed.');
+}
 
 // ─── Load ──────────────────────────────────────────────────────────────────────
 
 function normalizeApiBase(raw) {
-  return String(raw || '')
-    .trim()
-    .replace(/\/+$/, '');
+  return String(raw || '').trim().replace(/\/+$/, '');
 }
 
 async function loadSettings() {
   const values = await getAll([
     STORAGE_KEYS.API_BASE_URL,
     STORAGE_KEYS.RESUME_TEXT,
+    STORAGE_KEYS.RESUME_FILE_NAME,
     STORAGE_KEYS.LANGUAGE_PREF,
   ]);
   $apiBase.value    = normalizeApiBase(values[STORAGE_KEYS.API_BASE_URL]);
-  $resume.value     = values[STORAGE_KEYS.RESUME_TEXT] || '';
   $langSelect.value = values[STORAGE_KEYS.LANGUAGE_PREF] || LANGUAGE_PREF.AUTO;
+
+  const resumeText = values[STORAGE_KEYS.RESUME_TEXT] || '';
+  const fileName   = values[STORAGE_KEYS.RESUME_FILE_NAME] || '';
+  if (resumeText && fileName) {
+    $fileName.textContent = fileName;
+    $resumeText.value     = resumeText;
+    $textSection.classList.remove('hidden');
+    $removeSection.classList.remove('hidden');
+    showUploadState('success');
+  } else {
+    showUploadState('idle');
+  }
 }
 
 // ─── Save ──────────────────────────────────────────────────────────────────────
 
 async function saveSettings() {
   $btnSave.disabled = true;
-  $btnSave.textContent = 'Saving...';
+  $btnSave.textContent = 'Saving…';
   try {
     await setAll({
       [STORAGE_KEYS.API_BASE_URL]:  normalizeApiBase($apiBase.value),
-      [STORAGE_KEYS.RESUME_TEXT]:   $resume.value,
       [STORAGE_KEYS.LANGUAGE_PREF]: $langSelect.value,
     });
     toast('Settings saved!');
@@ -69,5 +201,26 @@ function toast(msg, isError = false) {
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
-loadSettings();
+// Drag-and-drop on upload zone
+$uploadZone.addEventListener('click', () => $fileInput.click());
+$fileInput.addEventListener('change', () => {
+  if ($fileInput.files?.[0]) handleFile($fileInput.files[0]);
+});
+$uploadZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  $uploadZone.classList.add('border-indigo-400', 'bg-indigo-50');
+});
+$uploadZone.addEventListener('dragleave', () => {
+  $uploadZone.classList.remove('border-indigo-400', 'bg-indigo-50');
+});
+$uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  $uploadZone.classList.remove('border-indigo-400', 'bg-indigo-50');
+  const file = e.dataTransfer?.files?.[0];
+  if (file) handleFile(file);
+});
+
+$removeBtn?.addEventListener('click', removeResume);
 $btnSave.addEventListener('click', saveSettings);
+
+loadSettings();

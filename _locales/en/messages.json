@@ -108,12 +108,12 @@
     "message": "No history yet",
     "description": "Shown when popup history is empty"
   },
-  "label_resume_preview": {
-    "message": "Resume Preview",
+  "label_resume": {
+    "message": "Resume",
     "description": "Resume section heading in popup"
   },
   "label_no_resume": {
-    "message": "No resume stored. Add one in Settings.",
+    "message": "No resume uploaded. Add one in Settings.",
     "description": "Shown when no resume in storage"
   },
   "label_api_key_missing": {
@@ -177,11 +177,11 @@
     "description": "Chinese only option"
   },
   "label_options_resume": {
-    "message": "Your Resume (Text)",
-    "description": "Resume textarea label"
+    "message": "Your Resume (PDF)",
+    "description": "Resume upload label"
   },
   "label_options_resume_hint": {
-    "message": "Paste your resume text here. Used for Cover Letter generation (future).",
+    "message": "Upload a PDF. Text is extracted and stored locally.",
     "description": "Resume field hint"
   },
   "label_options_save": {

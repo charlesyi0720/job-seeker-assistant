@@ -48,6 +48,7 @@ export const STORAGE_KEYS = {
   SUPABASE_ANON_KEY: 'supabase_anon_key',
   LANGUAGE_PREF: 'language_pref',
   RESUME_TEXT: 'resume_text',
+  RESUME_FILE_NAME: 'resume_file_name',
   CURRENT_JOB: 'current_job',
   LAST_ANALYSIS: 'last_analysis',
   LOCAL_HISTORY: 'local_history',
@@ -104,4 +105,3 @@ export const SCORE_THRESHOLDS = {
 };
 
 export const HISTORY_LIMIT = 50;
-export const RESUME_PREVIEW_LENGTH = 200;
