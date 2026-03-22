@@ -1,0 +1,328 @@
+{
+  "app_name": {
+    "message": "求职防忽悠过滤器",
+    "description": "Extension display name"
+  },
+  "app_description": {
+    "message": "中英双语求职信息过滤器，透视 Seek、LinkedIn 及各企业官网的招聘套路。",
+    "description": "Extension description"
+  },
+  "sidepanel_title": {
+    "message": "求职防忽悠过滤器",
+    "description": "Side panel tab title"
+  },
+
+  "label_analyzing": {
+    "message": "正在分析职位描述...",
+    "description": "Loading state while Gemini runs"
+  },
+  "label_no_job": {
+    "message": "未检测到职位信息",
+    "description": "Shown when scraper finds nothing"
+  },
+  "label_no_job_hint": {
+    "message": "请打开 Seek 或 LinkedIn 上的招聘页面以查看分析结果。",
+    "description": "Hint below no-job state"
+  },
+  "label_fluff_score": {
+    "message": "废话指数",
+    "description": "Fluff score card heading"
+  },
+  "label_fluff_score_sub": {
+    "message": "企业黑话密度",
+    "description": "Subheading under fluff score"
+  },
+  "label_buzzword_factors": {
+    "message": "套路解析",
+    "description": "Buzzword list heading"
+  },
+  "label_red_flags": {
+    "message": "危险信号",
+    "description": "Red flags section heading"
+  },
+  "label_no_red_flags": {
+    "message": "未检测到重大危险信号",
+    "description": "Shown when red flag list is empty"
+  },
+  "label_overall_assessment": {
+    "message": "综合评估",
+    "description": "Overall assessment heading"
+  },
+  "label_job_summary": {
+    "message": "职位概要",
+    "description": "Job summary card heading"
+  },
+  "label_company": {
+    "message": "公司",
+    "description": "Company label"
+  },
+  "label_location": {
+    "message": "地点",
+    "description": "Location label"
+  },
+  "label_posted_date": {
+    "message": "发布于",
+    "description": "Posted date label"
+  },
+  "label_salary": {
+    "message": "薪资",
+    "description": "Salary label"
+  },
+  "label_save_history": {
+    "message": "保存记录",
+    "description": "Save button label"
+  },
+  "label_copied": {
+    "message": "已复制！",
+    "description": "Clipboard copy confirmation"
+  },
+  "label_dismiss": {
+    "message": "收起",
+    "description": "Dismiss button label"
+  },
+  "label_copy_summary": {
+    "message": "复制摘要",
+    "description": "Copy button label"
+  },
+  "label_open_sidepanel": {
+    "message": "打开分析",
+    "description": "Button to open side panel"
+  },
+  "label_settings": {
+    "message": "设置",
+    "description": "Settings link text"
+  },
+  "label_open_settings": {
+    "message": "打开设置",
+    "description": "Settings button"
+  },
+  "label_reanalyze": {
+    "message": "重新分析",
+    "description": "Re-run Gemini analysis button"
+  },
+  "label_last_3": {
+    "message": "最近分析",
+    "description": "Popup section heading for recent jobs"
+  },
+  "label_no_history": {
+    "message": "暂无历史记录",
+    "description": "Shown when popup history is empty"
+  },
+  "label_resume_preview": {
+    "message": "简历预览",
+    "description": "Resume section heading in popup"
+  },
+  "label_no_resume": {
+    "message": "未存储简历，请在设置中添加。",
+    "description": "Shown when no resume in storage"
+  },
+  "label_api_key_missing": {
+    "message": "未配置 Gemini API 密钥，请前往设置添加。",
+    "description": "Warning when API key is missing"
+  },
+  "label_supabase_missing": {
+    "message": "未配置 Supabase，历史记录将仅保存在本地。",
+    "description": "Warning when Supabase is not set up"
+  },
+  "label_lang_en": {
+    "message": "EN",
+    "description": "English language toggle label"
+  },
+  "label_lang_zh": {
+    "message": "中文",
+    "description": "Chinese language toggle label"
+  },
+  "label_saved": {
+    "message": "已保存！",
+    "description": "Save success feedback"
+  },
+  "label_save_failed": {
+    "message": "保存失败",
+    "description": "Save failure feedback"
+  },
+  "label_options_title": {
+    "message": "求职防忽悠过滤器 — 设置",
+    "description": "Options page title"
+  },
+  "label_options_gemini_key": {
+    "message": "Gemini API 密钥",
+    "description": "API key field label"
+  },
+  "label_options_gemini_key_hint": {
+    "message": "从 Google AI Studio 获取密钥：aistudio.google.com",
+    "description": "Hint for API key"
+  },
+  "label_options_supabase_url": {
+    "message": "Supabase 项目地址",
+    "description": "Supabase URL field label"
+  },
+  "label_options_supabase_anon_key": {
+    "message": "Supabase 匿名密钥",
+    "description": "Supabase anon key field label"
+  },
+  "label_options_language": {
+    "message": "界面语言",
+    "description": "Language preference label"
+  },
+  "label_options_lang_auto": {
+    "message": "自动检测（英/中）",
+    "description": "Auto language option"
+  },
+  "label_options_lang_en": {
+    "message": "仅英语",
+    "description": "English only option"
+  },
+  "label_options_lang_zh": {
+    "message": "仅中文",
+    "description": "Chinese only option"
+  },
+  "label_options_resume": {
+    "message": "您的简历（文本）",
+    "description": "Resume textarea label"
+  },
+  "label_options_resume_hint": {
+    "message": "在此粘贴简历文本，用于生成求职信（后续功能）。",
+    "description": "Resume field hint"
+  },
+  "label_options_save": {
+    "message": "保存设置",
+    "description": "Save button label"
+  },
+  "label_options_clear_history": {
+    "message": "清除所有历史",
+    "description": "Clear history button label"
+  },
+  "label_options_saved": {
+    "message": "设置已保存！",
+    "description": "Save success message"
+  },
+  "label_options_cleared": {
+    "message": "历史已清除。",
+    "description": "Clear success message"
+  },
+  "label_severity_low": {
+    "message": "低",
+    "description": "Low severity badge"
+  },
+  "label_severity_medium": {
+    "message": "中",
+    "description": "Medium severity badge"
+  },
+  "label_severity_high": {
+    "message": "高",
+    "description": "High severity badge"
+  },
+  "label_category_role_ambiguity": {
+    "message": "职责模糊",
+    "description": "Buzzword category"
+  },
+  "label_category_culture_vagueness": {
+    "message": "文化暧昧",
+    "description": "Buzzword category"
+  },
+  "label_category_ai_wfh_obfuscation": {
+    "message": "AI/远程办公套路",
+    "description": "Buzzword category"
+  },
+  "label_category_compensation_vague": {
+    "message": "薪资模糊",
+    "description": "Buzzword category"
+  },
+
+  "label_real_requirements": {
+    "message": "Real Requirements",
+    "description": "Real Requirements section heading"
+  },
+  "label_must_haves": {
+    "message": "Must-Haves",
+    "description": "Must-haves subheading"
+  },
+  "label_wish_lists": {
+    "message": "Wish-Lists",
+    "description": "Wish-lists subheading"
+  },
+  "label_hidden_requirements": {
+    "message": "Hidden Requirements",
+    "description": "Hidden requirements subheading"
+  },
+  "label_ai_risk_index": {
+    "message": "AI Risk Index",
+    "description": "AI Risk Index section heading"
+  },
+  "label_ai_risk_low": {
+    "message": "Low automation risk",
+    "description": "AI risk low label"
+  },
+  "label_ai_risk_medium": {
+    "message": "Moderate automation risk",
+    "description": "AI risk medium label"
+  },
+  "label_ai_risk_high": {
+    "message": "High automation risk",
+    "description": "AI risk high label"
+  },
+  "label_tasks_at_risk": {
+    "message": "Tasks at automation risk",
+    "description": "Tasks at risk subheading"
+  },
+  "label_company_reviews": {
+    "message": "Company Reviews",
+    "description": "Company reviews section heading"
+  },
+  "label_common_praise": {
+    "message": "Common Praise",
+    "description": "Common praise label"
+  },
+  "label_common_complaint": {
+    "message": "Common Complaint",
+    "description": "Common complaint label"
+  },
+  "label_no_reviews": {
+    "message": "Could not retrieve company reviews.",
+    "description": "No reviews available message"
+  },
+  "label_review_loading": {
+    "message": "Loading company reputation...",
+    "description": "Reviews loading text"
+  },
+  "label_load_reviews": {
+    "message": "Load Reviews",
+    "description": "Load reviews button"
+  },
+  "label_cover_letter": {
+    "message": "Cover Letter Generator",
+    "description": "Cover letter section heading"
+  },
+  "label_generate_cover_letter": {
+    "message": "Generate Cover Letter",
+    "description": "Generate cover letter button"
+  },
+  "label_generating_cover_letter": {
+    "message": "Generating cover letter...",
+    "description": "Generating cover letter loading text"
+  },
+  "label_cover_letter_ready": {
+    "message": "Cover letter ready",
+    "description": "Cover letter ready confirmation"
+  },
+  "label_no_resume_stored": {
+    "message": "No resume stored. Add one in Settings.",
+    "description": "No resume stored warning"
+  },
+  "label_copy_cover_letter": {
+    "message": "Copy Cover Letter",
+    "description": "Copy cover letter button"
+  },
+  "label_regenerate": {
+    "message": "Regenerate",
+    "description": "Regenerate button label"
+  },
+  "label_cover_letter_generated": {
+    "message": "Cover letter generated",
+    "description": "Cover letter generated toast"
+  },
+  "label_company_sentiment": {
+    "message": "Company Sentiment",
+    "description": "Company sentiment heading"
+  }
+}

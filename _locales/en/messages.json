@@ -1,0 +1,328 @@
+{
+  "app_name": {
+    "message": "Job Seeker BS Filter",
+    "description": "Extension display name"
+  },
+  "app_description": {
+    "message": "Bilingual BS-Filter for job listings. Cuts through corporate jargon on SEEK, LinkedIn, and beyond.",
+    "description": "Extension description"
+  },
+  "sidepanel_title": {
+    "message": "Job Seeker BS Filter",
+    "description": "Side panel tab title"
+  },
+
+  "label_analyzing": {
+    "message": "Analyzing job description...",
+    "description": "Loading state while Gemini runs"
+  },
+  "label_no_job": {
+    "message": "No job listing detected on this page.",
+    "description": "Shown when scraper finds nothing"
+  },
+  "label_no_job_hint": {
+    "message": "Navigate to a job listing on SEEK or LinkedIn to see the analysis.",
+    "description": "Hint below no-job state"
+  },
+  "label_fluff_score": {
+    "message": "Fluff Score",
+    "description": "Fluff score card heading"
+  },
+  "label_fluff_score_sub": {
+    "message": "Corporate Jargon Density",
+    "description": "Subheading under fluff score"
+  },
+  "label_buzzword_factors": {
+    "message": "BS Factor Breakdown",
+    "description": "Buzzword list heading"
+  },
+  "label_red_flags": {
+    "message": "Red Flags",
+    "description": "Red flags section heading"
+  },
+  "label_no_red_flags": {
+    "message": "No major red flags detected",
+    "description": "Shown when red flag list is empty"
+  },
+  "label_overall_assessment": {
+    "message": "Overall Assessment",
+    "description": "Overall assessment heading"
+  },
+  "label_job_summary": {
+    "message": "Job Summary",
+    "description": "Job summary card heading"
+  },
+  "label_company": {
+    "message": "Company",
+    "description": "Company label"
+  },
+  "label_location": {
+    "message": "Location",
+    "description": "Location label"
+  },
+  "label_posted_date": {
+    "message": "Posted",
+    "description": "Posted date label"
+  },
+  "label_salary": {
+    "message": "Salary",
+    "description": "Salary label"
+  },
+  "label_save_history": {
+    "message": "Save to History",
+    "description": "Save button label"
+  },
+  "label_copied": {
+    "message": "Copied!",
+    "description": "Clipboard copy confirmation"
+  },
+  "label_dismiss": {
+    "message": "Dismiss",
+    "description": "Dismiss button label"
+  },
+  "label_copy_summary": {
+    "message": "Copy Summary",
+    "description": "Copy button label"
+  },
+  "label_open_sidepanel": {
+    "message": "Open Analysis",
+    "description": "Button to open side panel"
+  },
+  "label_settings": {
+    "message": "Settings",
+    "description": "Settings link text"
+  },
+  "label_open_settings": {
+    "message": "Open Settings",
+    "description": "Settings button"
+  },
+  "label_reanalyze": {
+    "message": "Re-analyze",
+    "description": "Re-run Gemini analysis button"
+  },
+  "label_last_3": {
+    "message": "Recent Analyses",
+    "description": "Popup section heading for recent jobs"
+  },
+  "label_no_history": {
+    "message": "No history yet",
+    "description": "Shown when popup history is empty"
+  },
+  "label_resume_preview": {
+    "message": "Resume Preview",
+    "description": "Resume section heading in popup"
+  },
+  "label_no_resume": {
+    "message": "No resume stored. Add one in Settings.",
+    "description": "Shown when no resume in storage"
+  },
+  "label_api_key_missing": {
+    "message": "Gemini API key not configured. Please add it in Settings.",
+    "description": "Warning when API key is missing"
+  },
+  "label_supabase_missing": {
+    "message": "Supabase not configured. History will be stored locally only.",
+    "description": "Warning when Supabase is not set up"
+  },
+  "label_lang_en": {
+    "message": "EN",
+    "description": "English language toggle label"
+  },
+  "label_lang_zh": {
+    "message": "中文",
+    "description": "Chinese language toggle label"
+  },
+  "label_saved": {
+    "message": "Saved!",
+    "description": "Save success feedback"
+  },
+  "label_save_failed": {
+    "message": "Save failed",
+    "description": "Save failure feedback"
+  },
+  "label_options_title": {
+    "message": "Job Seeker BS Filter — Settings",
+    "description": "Options page title"
+  },
+  "label_options_gemini_key": {
+    "message": "Gemini API Key",
+    "description": "API key field label"
+  },
+  "label_options_gemini_key_hint": {
+    "message": "Get your key from Google AI Studio: aistudio.google.com",
+    "description": "Hint for API key"
+  },
+  "label_options_supabase_url": {
+    "message": "Supabase Project URL",
+    "description": "Supabase URL field label"
+  },
+  "label_options_supabase_anon_key": {
+    "message": "Supabase Anon Key",
+    "description": "Supabase anon key field label"
+  },
+  "label_options_language": {
+    "message": "Preferred Language",
+    "description": "Language preference label"
+  },
+  "label_options_lang_auto": {
+    "message": "Auto-detect (Ch/En)",
+    "description": "Auto language option"
+  },
+  "label_options_lang_en": {
+    "message": "English only",
+    "description": "English only option"
+  },
+  "label_options_lang_zh": {
+    "message": "Chinese only",
+    "description": "Chinese only option"
+  },
+  "label_options_resume": {
+    "message": "Your Resume (Text)",
+    "description": "Resume textarea label"
+  },
+  "label_options_resume_hint": {
+    "message": "Paste your resume text here. Used for Cover Letter generation (future).",
+    "description": "Resume field hint"
+  },
+  "label_options_save": {
+    "message": "Save Settings",
+    "description": "Save button label"
+  },
+  "label_options_clear_history": {
+    "message": "Clear All History",
+    "description": "Clear history button label"
+  },
+  "label_options_saved": {
+    "message": "Settings saved successfully!",
+    "description": "Save success message"
+  },
+  "label_options_cleared": {
+    "message": "History cleared.",
+    "description": "Clear success message"
+  },
+  "label_severity_low": {
+    "message": "Low",
+    "description": "Low severity badge"
+  },
+  "label_severity_medium": {
+    "message": "Medium",
+    "description": "Medium severity badge"
+  },
+  "label_severity_high": {
+    "message": "High",
+    "description": "High severity badge"
+  },
+  "label_category_role_ambiguity": {
+    "message": "Role Ambiguity",
+    "description": "Buzzword category"
+  },
+  "label_category_culture_vagueness": {
+    "message": "Culture Vagueness",
+    "description": "Buzzword category"
+  },
+  "label_category_ai_wfh_obfuscation": {
+    "message": "AI / WFH Obfuscation",
+    "description": "Buzzword category"
+  },
+  "label_category_compensation_vague": {
+    "message": "Compensation Vagueness",
+    "description": "Buzzword category"
+  },
+
+  "label_real_requirements": {
+    "message": "Real Requirements",
+    "description": "Real Requirements section heading"
+  },
+  "label_must_haves": {
+    "message": "Must-Haves",
+    "description": "Must-haves subheading"
+  },
+  "label_wish_lists": {
+    "message": "Wish-Lists",
+    "description": "Wish-lists subheading"
+  },
+  "label_hidden_requirements": {
+    "message": "Hidden Requirements",
+    "description": "Hidden requirements subheading"
+  },
+  "label_ai_risk_index": {
+    "message": "AI Risk Index",
+    "description": "AI Risk Index section heading"
+  },
+  "label_ai_risk_low": {
+    "message": "Low automation risk",
+    "description": "AI risk low label"
+  },
+  "label_ai_risk_medium": {
+    "message": "Moderate automation risk",
+    "description": "AI risk medium label"
+  },
+  "label_ai_risk_high": {
+    "message": "High automation risk",
+    "description": "AI risk high label"
+  },
+  "label_tasks_at_risk": {
+    "message": "Tasks at automation risk",
+    "description": "Tasks at risk subheading"
+  },
+  "label_company_reviews": {
+    "message": "Company Reviews",
+    "description": "Company reviews section heading"
+  },
+  "label_common_praise": {
+    "message": "Common Praise",
+    "description": "Common praise label"
+  },
+  "label_common_complaint": {
+    "message": "Common Complaint",
+    "description": "Common complaint label"
+  },
+  "label_no_reviews": {
+    "message": "Could not retrieve company reviews.",
+    "description": "No reviews available message"
+  },
+  "label_review_loading": {
+    "message": "Loading company reputation...",
+    "description": "Reviews loading text"
+  },
+  "label_load_reviews": {
+    "message": "Load Reviews",
+    "description": "Load reviews button"
+  },
+  "label_cover_letter": {
+    "message": "Cover Letter Generator",
+    "description": "Cover letter section heading"
+  },
+  "label_generate_cover_letter": {
+    "message": "Generate Cover Letter",
+    "description": "Generate cover letter button"
+  },
+  "label_generating_cover_letter": {
+    "message": "Generating cover letter...",
+    "description": "Generating cover letter loading text"
+  },
+  "label_cover_letter_ready": {
+    "message": "Cover letter ready",
+    "description": "Cover letter ready confirmation"
+  },
+  "label_no_resume_stored": {
+    "message": "No resume stored. Add one in Settings.",
+    "description": "No resume stored warning"
+  },
+  "label_copy_cover_letter": {
+    "message": "Copy Cover Letter",
+    "description": "Copy cover letter button"
+  },
+  "label_regenerate": {
+    "message": "Regenerate",
+    "description": "Regenerate button label"
+  },
+  "label_cover_letter_generated": {
+    "message": "Cover letter generated",
+    "description": "Cover letter generated toast"
+  },
+  "label_company_sentiment": {
+    "message": "Company Sentiment",
+    "description": "Company sentiment heading"
+  }
+}

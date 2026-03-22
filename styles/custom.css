@@ -1,0 +1,48 @@
+/**
+ * styles/custom.css
+ * Minimal overrides for injected UI elements.
+ * Most styling is handled via Tailwind classes + Tailwind CDN.
+ * This file is loaded as a web_accessible_resource for edge cases.
+ */
+
+/* Ensure no flash of unstyled content on injected overlays */
+#jse-overlay-root {
+  pointer-events: none;
+}
+
+#jse-overlay-root * {
+  pointer-events: all;
+}
+
+/* Smooth scrollbar for overflow containers */
+.jse-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #c7c7c7 transparent;
+}
+
+/* Subtle entrance animation for cards */
+.jse-card-enter {
+  animation: jse-card-slide-in 0.25s ease-out forwards;
+}
+
+@keyframes jse-card-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fluff score color pulse on load */
+.jse-score-highlight {
+  animation: jse-score-pulse 0.6s ease-out;
+}
+
+@keyframes jse-score-pulse {
+  0%   { transform: scale(1.0); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1.0); }
+}

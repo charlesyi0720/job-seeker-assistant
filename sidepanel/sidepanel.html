@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Seeker BS Filter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { 50: '#eef2ff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 2px; }
+    .spin { animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse-glow { 0%,100% { box-shadow: 0 0 8px rgba(99,102,241,0.3); } 50% { box-shadow: 0 0 20px rgba(99,102,241,0.6); } }
+    .analyzing { animation: pulse-glow 1.4s ease-in-out infinite; }
+    @keyframes slide-in { from { opacity:0; transform: translateX(12px); } to { opacity:1; transform: translateX(0); } }
+    .slide-in { animation: slide-in 0.3s ease-out forwards; }
+  </style>
+</head>
+<body class="bg-gray-50 h-screen flex flex-col overflow-hidden">
+
+  <!-- Header -->
+  <header id="sp-header" class="flex-shrink-0 bg-brand-600 text-white px-4 py-3 flex items-center justify-between shadow">
+    <div class="flex items-center gap-2">
+      <span class="text-lg">🛡️</span>
+      <h1 id="sp-title" class="text-sm font-semibold">Job Seeker BS Filter</h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- Language Toggle -->
+      <button id="lang-toggle" title="Toggle language"
+        class="flex items-center gap-1 bg-brand-700 hover:bg-brand-500 transition px-2 py-1 rounded text-xs font-medium">
+        <span id="lang-label">EN</span>
+      </button>
+      <!-- Settings link -->
+      <a href="#" id="sp-settings-link"
+        class="w-7 h-7 flex items-center justify-center bg-brand-700 hover:bg-brand-500 transition rounded text-xs"
+        title="Settings">⚙</a>
+    </div>
+  </header>
+
+  <!-- Loading State -->
+  <div id="sp-loading" class="flex-1 flex flex-col items-center justify-center gap-3 hidden">
+    <div class="analyzing w-14 h-14 rounded-full bg-brand-50 border-2 border-brand-500 flex items-center justify-center">
+      <span class="text-2xl">🔍</span>
+    </div>
+    <p id="sp-loading-text" class="text-sm text-gray-500">Analyzing job description...</p>
+  </div>
+
+  <!-- No Job State -->
+  <div id="sp-no-job" class="flex-1 flex flex-col items-center justify-center gap-3 hidden">
+    <span class="text-4xl">📭</span>
+    <p id="sp-no-job-text" class="text-sm font-medium text-gray-600">No job listing detected.</p>
+    <p id="sp-no-job-hint" class="text-xs text-gray-400 text-center px-8">
+      Navigate to a job listing on SEEK or LinkedIn to see the analysis.
+    </p>
+  </div>
+
+  <!-- Error State -->
+  <div id="sp-error" class="flex-1 flex flex-col items-center justify-center gap-3 hidden px-6">
+    <span class="text-4xl">⚠️</span>
+    <p id="sp-error-text" class="text-sm font-medium text-red-600 text-center"></p>
+    <button id="sp-error-retry" class="text-xs bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded transition">
+      Retry Analysis
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <main id="sp-content" class="flex-1 overflow-y-auto hidden">
+    <div class="p-4 space-y-4">
+
+      <!-- Job Summary Card -->
+      <section id="sp-job-summary" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+        <h2 id="sp-job-heading" class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Job Summary</h2>
+        <h3 id="sp-job-title" class="font-semibold text-gray-900 text-base leading-snug mb-2"></h3>
+        <div class="flex flex-wrap gap-2 text-xs text-gray-500">
+          <span id="sp-job-company" class="inline-flex items-center gap-1 bg-gray-100 px-2 py-0.5 rounded"></span>
+          <span id="sp-job-location" class="inline-flex items-center gap-1 bg-gray-100 px-2 py-0.5 rounded"></span>
+          <span id="sp-job-salary" class="inline-flex items-center gap-1 bg-green-50 text-green-700 px-2 py-0.5 rounded"></span>
+        </div>
+        <p id="sp-job-posted" class="mt-2 text-xs text-gray-400"></p>
+      </section>
+
+      <!-- Fluff Score Gauge -->
+      <section id="sp-fluff-section" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 slide-in">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 id="sp-fluff-heading" class="text-xs font-semibold text-gray-400 uppercase tracking-wide">Fluff Score</h2>
+            <p class="text-xs text-gray-400 mt-0.5">Corporate Jargon Density</p>
+          </div>
+          <div id="sp-gauge-container" class="flex flex-col items-center">
+            <svg id="sp-gauge" viewBox="0 0 120 70" class="w-20 h-12">
+              <!-- Background arc -->
+              <path d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke="#e5e7eb" stroke-width="12" stroke-linecap="round"/>
+              <!-- Score arc — updated by JS -->
+              <path id="sp-gauge-fill" d="M 10 60 A 50 50 0 0 1 110 60" fill="none" stroke="#6366f1" stroke-width="12" stroke-linecap="round"
+                stroke-dasharray="0 157" stroke-dashoffset="0"/>
+              <!-- Score text -->
+              <text x="60" y="58" text-anchor="middle" font-size="18" font-weight="700" fill="#374151" id="sp-gauge-number">--</text>
+              <text x="60" y="68" text-anchor="middle" font-size="8" fill="#9ca3af">/ 100</text>
+            </svg>
+            <span id="sp-gauge-label" class="text-xs font-medium text-gray-500 mt-1">--</span>
+          </div>
+        </div>
+
+        <!-- Overall Assessment -->
+        <div class="mt-3 pt-3 border-t border-gray-100">
+          <h3 id="sp-assessment-heading" class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Overall Assessment</h3>
+          <p id="sp-assessment-text" class="text-sm text-gray-700 leading-relaxed"></p>
+        </div>
+      </section>
+
+      <!-- BS Factor Breakdown -->
+      <section id="sp-buzzwords-section" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+        <h2 id="sp-buzzwords-heading" class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">BS Factor Breakdown</h2>
+        <div id="sp-buzzwords-list" class="space-y-2"></div>
+      </section>
+
+      <!-- Red Flags -->
+      <section id="sp-redflags-section" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+        <h2 id="sp-redflags-heading" class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Red Flags</h2>
+        <div id="sp-redflags-list" class="space-y-2">
+          <p id="sp-no-redflags" class="text-xs text-gray-400">No major red flags detected.</p>
+        </div>
+      </section>
+
+      <!-- Real Requirements -->
+      <section id="sp-req-section" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 slide-in hidden">
+        <h2 id="sp-req-heading" class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Real Requirements</h2>
+        <div class="space-y-2">
+          <div>
+            <p class="text-xs font-semibold text-red-700 mb-1 flex items-center gap-1">
+              <span>🔴</span> <span id="sp-must-haves-label">Must-Haves</span>
+            </p>
+            <ul id="sp-must-haves" class="text-xs text-gray-600 list-disc list-inside space-y-0.5"></ul>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-gray-500 mb-1 flex items-center gap-1">
+              <span>⚪</span> <span id="sp-wish-lists-label">Wish-Lists</span>
+            </p>
+            <ul id="sp-wish-lists" class="text-xs text-gray-400 list-disc list-inside space-y-0.5"></ul>
+          </div>
+          <div id="sp-hidden-req-wrapper" class="hidden">
+            <p class="text-xs font-semibold text-amber-600 mb-1 flex items-center gap-1">
+              <span>⚠️</span> <span id="sp-hidden-req-label">Hidden Requirements</span>
+            </p>
+            <ul id="sp-hidden-reqs" class="text-xs text-amber-700 list-disc list-inside space-y-0.5"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Risk Index -->
+      <section id="sp-ai-risk-section" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 slide-in hidden">
+        <h2 id="sp-ai-risk-heading" class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">AI Risk Index</h2>
+        <div class="flex items-center gap-3 mb-2">
+          <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div id="sp-ai-risk-fill" class="h-full bg-green-500 rounded-full transition-all duration-700" style="width:0%"></div>
+          </div>
+          <span id="sp-ai-risk-score" class="text-xs font-bold text-gray-700 w-8 text-right">--</span>
+        </div>
+        <p id="sp-ai-risk-analysis" class="text-xs text-gray-600 leading-relaxed"></p>
+        <div id="sp-ai-risk-tasks-wrapper" class="mt-2 hidden">
+          <p class="text-xs font-medium text-gray-500 mb-1 flex items-center gap-1">
+            <span>🤖</span> <span id="sp-tasks-at-risk-label">Tasks at automation risk</span>
+          </p>
+          <ul id="sp-ai-risk-tasks" class="text-xs text-gray-400 list-disc list-inside space-y-0.5"></ul>
+        </div>
+      </section>
+
+      <!-- Company Reviews -->
+      <section id="sp-reviews-section" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 slide-in hidden">
+        <div class="flex items-center justify-between mb-3">
+          <h2 id="sp-reviews-heading" class="text-xs font-semibold text-gray-400 uppercase tracking-wide">Company Sentiment</h2>
+          <button id="sp-btn-fetch-reviews"
+            class="text-xs bg-blue-50 hover:bg-blue-100 text-blue-600 px-2 py-1 rounded transition flex items-center gap-1 font-medium">
+            <span id="sp-fetch-icon">🔄</span>
+            <span id="sp-fetch-reviews-text">Load Reviews</span>
+          </button>
+        </div>
+        <div id="sp-reviews-loading" class="hidden">
+          <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mb-1.5">
+            <div class="h-full bg-blue-400 rounded-full animate-pulse" style="width:60%"></div>
+          </div>
+          <p id="sp-review-loading-text" class="text-xs text-gray-400">Loading company reputation...</p>
+        </div>
+        <div id="sp-reviews-content" class="space-y-2 hidden">
+          <div class="p-2.5 rounded-lg bg-green-50">
+            <p class="text-xs font-semibold text-green-700 mb-0.5 flex items-center gap-1">
+              <span>👍</span> <span id="sp-praise-label">Common Praise</span>
+            </p>
+            <p id="sp-review-positive" class="text-xs text-green-800 leading-relaxed"></p>
+          </div>
+          <div class="p-2.5 rounded-lg bg-red-50">
+            <p class="text-xs font-semibold text-red-700 mb-0.5 flex items-center gap-1">
+              <span>👎</span> <span id="sp-complaint-label">Common Complaint</span>
+            </p>
+            <p id="sp-review-negative" class="text-xs text-red-800 leading-relaxed"></p>
+          </div>
+        </div>
+        <p id="sp-reviews-error" class="hidden text-xs text-gray-400 italic"></p>
+      </section>
+
+      <!-- Cover Letter Generator -->
+      <section id="sp-cl-section" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 slide-in hidden">
+        <h2 id="sp-cl-heading" class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Cover Letter Generator</h2>
+
+        <!-- Empty state — prompt to generate -->
+        <div id="sp-cl-empty" class="text-center py-3">
+          <p id="sp-cl-empty-text" class="text-xs text-gray-400 mb-3 leading-relaxed">
+            Generate a tailored cover letter based on your resume and this job description.
+          </p>
+          <button id="sp-btn-generate-cl"
+            class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs font-semibold py-2.5 px-6 rounded-xl transition flex items-center justify-center gap-2 mx-auto shadow-sm">
+            ✍️ <span id="sp-cl-btn-text">Generate Cover Letter</span>
+          </button>
+          <p id="sp-no-resume-error" class="hidden text-xs text-amber-600 mt-2 font-medium">
+            No resume stored. Add one in Settings first.
+          </p>
+        </div>
+
+        <!-- Loading state — progress bar -->
+        <div id="sp-cl-loading" class="hidden">
+          <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mb-2">
+            <div id="sp-cl-progress" class="h-full bg-indigo-500 rounded-full transition-all duration-500" style="width:0%"></div>
+          </div>
+          <p id="sp-cl-loading-text" class="text-xs text-gray-400 text-center">Generating cover letter...</p>
+        </div>
+
+        <!-- Result state -->
+        <div id="sp-cl-result" class="hidden">
+          <p id="sp-cl-content" class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap mb-3 bg-gray-50 rounded-lg p-3 border border-gray-100"></p>
+          <div class="flex gap-2">
+            <button id="sp-btn-copy-cl"
+              class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg transition flex items-center justify-center gap-1">
+              📋 <span id="sp-copy-cl-text">Copy</span>
+            </button>
+            <button id="sp-btn-regenerate-cl"
+              class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs font-medium py-2 px-3 rounded-lg transition flex items-center justify-center gap-1">
+              🔄 <span>Regenerate</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Action Bar -->
+  <footer id="sp-actions" class="flex-shrink-0 border-t border-gray-200 bg-white px-4 py-3 flex gap-2 hidden">
+    <button id="sp-btn-save"
+      class="flex-1 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white text-xs font-medium py-2.5 rounded-lg transition flex items-center justify-center gap-1.5">
+      💾 <span id="sp-btn-save-text">Save to History</span>
+    </button>
+    <button id="sp-btn-copy"
+      class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+      📋 <span id="sp-btn-copy-text">Copy</span>
+    </button>
+  </footer>
+
+  <!-- Toast -->
+  <div id="sp-toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-4 py-2 rounded-lg opacity-0 transition-opacity pointer-events-none z-50">
+    <span id="sp-toast-text"></span>
+  </div>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>

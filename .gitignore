@@ -1,0 +1,17 @@
+# Environment variables — contains your Gemini API key
+.env.local
+.env
+
+# Vercel
+.vercel
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies (if any future npm install is run)
+node_modules/

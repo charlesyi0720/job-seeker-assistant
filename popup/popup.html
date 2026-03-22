@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Seeker BS Filter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+    .spin { animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+
+  <div class="w-80 bg-white rounded-2xl shadow-lg overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-base">🛡️</span>
+        <span class="text-white text-sm font-semibold" id="popup-title">Job Seeker BS Filter</span>
+      </div>
+      <a href="#" id="popup-settings"
+        class="text-white/70 hover:text-white text-xs transition">⚙</a>
+    </div>
+
+    <!-- Status Banner (API key missing) -->
+    <div id="popup-api-warning" class="hidden bg-amber-50 border-b border-amber-100 px-3 py-2 flex items-start gap-2">
+      <span class="text-amber-500 text-sm flex-shrink-0">⚠️</span>
+      <p class="text-xs text-amber-700 leading-relaxed" id="popup-api-warning-text"></p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="p-3 space-y-3">
+
+      <!-- Open Side Panel Button -->
+      <button id="popup-open-panel"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-xs font-medium py-2.5 rounded-xl transition flex items-center justify-center gap-2">
+        <span>🔍</span>
+        <span id="popup-open-text">Open Analysis</span>
+      </button>
+
+      <!-- Resume Preview -->
+      <div class="bg-gray-50 rounded-xl p-3">
+        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5 flex items-center gap-1">
+          <span>📄</span> <span id="popup-resume-heading">Resume Preview</span>
+        </h3>
+        <p id="popup-resume-content"
+          class="text-xs text-gray-600 leading-relaxed whitespace-pre-wrap break-words
+                 ${!0 ? 'max-h-16 overflow-y-auto' : ''}"></p>
+        <p id="popup-no-resume" class="hidden text-xs text-gray-400 italic"></p>
+      </div>
+
+      <!-- Recent History -->
+      <div>
+        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 flex items-center gap-1">
+          <span>🕒</span> <span id="popup-history-heading">Recent Analyses</span>
+        </h3>
+        <div id="popup-history-list" class="space-y-1.5 max-h-32 overflow-y-auto">
+          <!-- Populated by JS -->
+        </div>
+        <p id="popup-no-history" class="hidden text-xs text-gray-400 italic"></p>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="border-t border-gray-100 px-3 py-2 flex items-center justify-between">
+      <a href="#" id="popup-open-settings"
+        class="text-xs text-indigo-600 hover:text-indigo-800 transition font-medium">Open Settings</a>
+      <span class="text-xs text-gray-300">v1.0</span>
+    </div>
+
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
