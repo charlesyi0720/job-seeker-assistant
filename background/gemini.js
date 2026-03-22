@@ -23,7 +23,7 @@ async function callVercel({ job, resume, mode, lang }) {
   const base = await getApiBaseUrl();
   if (!base) {
     throw new Error(
-      'API_BASE_URL_MISSING: Open extension Settings and paste your Vercel API base URL (e.g. https://your-project.vercel.app/api). It must be a deployment of this repo’s api/analyze-job.js — not a Flutter/other app on the same domain.'
+      'API_BASE_URL_MISSING: Set VERCEL_API_BASE_DEFAULT in shared/constants.js to your Vercel deployment (must include api/analyze-job.js).'
     );
   }
 

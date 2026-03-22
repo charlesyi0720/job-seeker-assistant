@@ -14,13 +14,12 @@
  */
 
 // ── Vercel Backend ──────────────────────────────────────────────────────────────
-// Set your real base URL in extension Settings (chrome.storage), or use this default.
-// IMPORTANT: Must be a deployment that includes THIS repo's `api/analyze-job.js`
-// (a generic Flutter / Next app on the same name will NOT expose /api/analyze-job).
-// Examples: https://your-api-project.vercel.app/api  |  http://localhost:3000/api
-export const VERCEL_API_BASE_DEFAULT = '';
+// Shipped to end users — no Settings field. Maintainers: change this before release
+// to the deployment that includes THIS repo's `api/analyze-job.js` + GEMINI_API_KEY.
+// Must end with `/api` (no trailing slash). Local dev: http://localhost:3000/api
+export const VERCEL_API_BASE_DEFAULT = 'https://job-seeker-assistant.vercel.app/api';
 
-/** @deprecated use VERCEL_API_BASE_DEFAULT + storage override; kept for older imports */
+/** @deprecated alias for VERCEL_API_BASE_DEFAULT */
 export const VERCEL_API_BASE = VERCEL_API_BASE_DEFAULT;
 
 export const PLATFORM_HOSTNAMES = {
@@ -42,8 +41,6 @@ export const GEMINI_CONFIG = {
 export const STORAGE_KEYS = {
   // NOTE: GEMINI_API_KEY is no longer stored in the extension.
   // It is set as an environment variable in the Vercel dashboard.
-  /** User override: e.g. https://xxx.vercel.app/api (no trailing slash after /api) */
-  API_BASE_URL: 'api_base_url',
   SUPABASE_URL: 'supabase_url',
   SUPABASE_ANON_KEY: 'supabase_anon_key',
   LANGUAGE_PREF: 'language_pref',

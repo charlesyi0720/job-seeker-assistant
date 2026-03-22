@@ -111,11 +111,7 @@ export function clear() {
  * @returns {Promise<string>}
  */
 export async function getApiBaseUrl() {
-  const custom = await get(STORAGE_KEYS.API_BASE_URL);
-  const trimmed = typeof custom === 'string' ? custom.trim().replace(/\/+$/, '') : '';
-  if (trimmed) return trimmed;
-  const def = (VERCEL_API_BASE_DEFAULT || '').trim().replace(/\/+$/, '');
-  return def;
+  return (VERCEL_API_BASE_DEFAULT || '').trim().replace(/\/+$/, '');
 }
 
 export async function getSupabaseConfig() {

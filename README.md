@@ -44,13 +44,15 @@ The extension **never** stores your Gemini API key. It calls your own Vercel fun
 3. **Environment variables** → add `GEMINI_API_KEY` (from [Google AI Studio](https://aistudio.google.com)).
 4. Deploy. Your API base URL will look like: `https://<project-name>.vercel.app/api` (no trailing slash).
 
-### 3. Point the extension at your API
+### 3. Ship the correct API URL in the extension (maintainers)
 
-1. Open the extension **Settings** (from the popup or side panel).
-2. Under **Analysis API (Vercel)**, paste your base URL, e.g. `https://<project-name>.vercel.app/api`.
-3. Save.
+End users do **not** configure the backend. Set the production base URL in **`shared/constants.js`**:
 
-Local dev: run `vercel dev` (or your Node server on port 3000) and use `http://localhost:3000/api`.
+```js
+export const VERCEL_API_BASE_DEFAULT = 'https://<your-vercel-project>.vercel.app/api';
+```
+
+Rebuild/reload the unpacked extension after changing it. For local development, temporarily point that constant at `http://localhost:3000/api` or run `vercel dev`.
 
 ### 4. Supabase (optional)
 

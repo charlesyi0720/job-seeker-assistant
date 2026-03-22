@@ -45,14 +45,14 @@ function applyLabels() {
 
 async function renderResume() {
   const [resume, fileName] = await Promise.all([getResume(), getResumeFileName()]);
-  if (!resume || !fileName) {
+  if (!resume || !resume.trim()) {
     $hasResume.classList.add('hidden');
     $noResume.classList.remove('hidden');
     return;
   }
   $hasResume.classList.remove('hidden');
   $noResume.classList.add('hidden');
-  $hasResume.textContent = '✅ ' + fileName;
+  $hasResume.textContent = '✅ ' + (fileName || 'Resume on file');
 }
 
 // ─── History List ──────────────────────────────────────────────────────────────
