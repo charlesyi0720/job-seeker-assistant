@@ -1,19 +1,25 @@
 /**
  * shared/constants.js
  * Global constants for the Job Seeker BS Filter extension.
+ *
+ * NOTE: This file is a true ESM module used by:
+ *   - background/service-worker.js  (manifest: "type": "module")
+ *   - popup/popup.js               (script type="module" in HTML)
+ *   - sidepanel/sidepanel.js       (script type="module" in HTML)
+ *   - content scripts              (loaded via chrome.runtime.getURL() as a
+ *     module script in the manifest inline loader — see content-entry.js)
+ *
+ * Do NOT list this file in manifest.json content_scripts directly, as
+ * content scripts do not support import/export syntax.
  */
 
 // ── Vercel Backend ──────────────────────────────────────────────────────────────
 // During local dev: http://localhost:3000/api
 // After deploying to Vercel, replace with your actual URL e.g.:
 //   https://job-seeker-assistant.vercel.app/api
-// ── Vercel Backend ──────────────────────────────────────────────────────────────
-// During local dev: http://localhost:3000/api
-// After deploying to Vercel, replace with your actual URL e.g.:
-//   https://job-seeker-assistant.vercel.app/api
-const VERCEL_API_BASE = 'https://job-seeker-assistant.vercel.app/api';
+export const VERCEL_API_BASE = 'https://job-seeker-assistant.vercel.app/api';
 
-const PLATFORM_HOSTNAMES = {
+export const PLATFORM_HOSTNAMES = {
   SEEK: 'seek.com.au',
   SEEK_CAREERS: 'seek.co.nz',
   LINKEDIN: 'linkedin.com',
@@ -22,14 +28,16 @@ const PLATFORM_HOSTNAMES = {
   JORA_AU: 'au.jora.com',
 };
 
-const GEMINI_CONFIG = {
+export const GEMINI_CONFIG = {
   MODEL: 'gemini-3.1-flash-lite',
   BASE_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent',
   MAX_TOKENS: 1200,
   TEMPERATURE: 0.2,
 };
 
-const STORAGE_KEYS = {
+export const STORAGE_KEYS = {
+  // NOTE: GEMINI_API_KEY is no longer stored in the extension.
+  // It is set as an environment variable in the Vercel dashboard.
   SUPABASE_URL: 'supabase_url',
   SUPABASE_ANON_KEY: 'supabase_anon_key',
   LANGUAGE_PREF: 'language_pref',
@@ -40,19 +48,19 @@ const STORAGE_KEYS = {
   SESSION_LANG: 'session_lang',
 };
 
-const LANGUAGE_PREF = {
+export const LANGUAGE_PREF = {
   AUTO: 'auto',
   EN: 'en',
   ZH: 'zh',
 };
 
-const SEVERITY = {
+export const SEVERITY = {
   LOW: 'low',
   MEDIUM: 'medium',
   HIGH: 'high',
 };
 
-const BUZZWORD_CATEGORIES = {
+export const BUZZWORD_CATEGORIES = {
   ROLE_AMBIGUITY: 'role_ambiguity',
   CULTURE_VAGUENESS: 'culture_vagueness',
   AI_WFH_OBFUSCATION: 'ai_wfh_obfuscation',
@@ -61,7 +69,7 @@ const BUZZWORD_CATEGORIES = {
   AI_RISK_INDEX: 'ai_risk_index',
 };
 
-const MESSAGE_TYPES = {
+export const MESSAGE_TYPES = {
   ANALYZE_JOB: 'ANALYZE_JOB',
   JOB_ANALYZED: 'JOB_ANALYZED',
   ANALYZER_ERROR: 'ANALYZER_ERROR',
@@ -80,14 +88,14 @@ const MESSAGE_TYPES = {
   REPUTATION_FETCHED: 'REPUTATION_FETCHED',
 };
 
-const SIDEPANEL_ID = 'jse-sidepanel-root';
-const OVERLAY_ROOT_ID = 'jse-overlay-root';
-const FAB_BUTTON_ID = 'jse-fab-button';
+export const SIDEPANEL_ID = 'jse-sidepanel-root';
+export const OVERLAY_ROOT_ID = 'jse-overlay-root';
+export const FAB_BUTTON_ID = 'jse-fab-button';
 
-const SCORE_THRESHOLDS = {
+export const SCORE_THRESHOLDS = {
   LOW: 40,
   HIGH: 70,
 };
 
-const HISTORY_LIMIT = 50;
-const RESUME_PREVIEW_LENGTH = 200;
+export const HISTORY_LIMIT = 50;
+export const RESUME_PREVIEW_LENGTH = 200;
