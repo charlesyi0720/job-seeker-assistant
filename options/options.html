@@ -38,11 +38,29 @@
         <span>🤖</span> How it works
       </h2>
       <p class="text-xs text-indigo-600 leading-relaxed">
-        Open any job listing on SEEK or LinkedIn and click the extension icon — the side panel
-        will automatically analyze the job description. Paste your resume below to unlock
-        cover letter generation.
+        Analysis runs on <strong>your</strong> Vercel backend (Gemini key stays on the server).
+        Deploy this repo’s <code class="bg-indigo-100 px-1 rounded">api/analyze-job.js</code> to Vercel,
+        add env <code class="bg-indigo-100 px-1 rounded">GEMINI_API_KEY</code>, then paste the API base URL below
+        (example: <code class="bg-indigo-100 px-1 rounded">https://my-api.vercel.app/api</code> — not a Flutter/other app URL).
       </p>
     </div>
+
+    <!-- Analysis API -->
+    <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+      <h2 class="text-sm font-semibold text-gray-700 border-b border-gray-100 pb-2 flex items-center gap-2">
+        <span>☁️</span> Analysis API (Vercel)
+      </h2>
+      <p class="text-xs text-gray-400 -mt-1">
+        Must end with <code class="bg-gray-100 px-1 rounded">/api</code> (no trailing slash). Local dev:
+        <code class="bg-gray-100 px-1 rounded">http://localhost:3000/api</code>
+      </p>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1.5" for="opt-api-base">API base URL</label>
+        <input id="opt-api-base" type="url" inputmode="url" autocomplete="off" spellcheck="false"
+          placeholder="https://your-project.vercel.app/api"
+          class="w-full text-sm border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+      </div>
+    </section>
 
     <!-- Resume Card -->
     <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">

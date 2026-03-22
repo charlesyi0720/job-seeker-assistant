@@ -3,7 +3,7 @@
  * Wrapper around chrome.storage.local with typed getters/setters.
  */
 
-import { STORAGE_KEYS } from './constants.js';
+import { STORAGE_KEYS, VERCEL_API_BASE_DEFAULT } from './constants.js';
 
 /**
  * Get a single value from chrome.storage.local.
@@ -105,8 +105,17 @@ export function clear() {
 
 // Convenience typed helpers
 
-export async function getApiKey() {
-  return get(STORAGE_KEYS.GEMINI_API_KEY);
+/**
+ * Base URL for the Vercel proxy (must end with `/api`, no trailing slash).
+ * Uses Settings override, then bundled default.
+ * @returns {Promise<string>}
+ */
+export async function getApiBaseUrl() {
+  const custom = await get(STORAGE_KEYS.API_BASE_URL);
+  const trimmed = typeof custom === 'string' ? custom.trim().replace(/\/+$/, '') : '';
+  if (trimmed) return trimmed;
+  const def = (VERCEL_API_BASE_DEFAULT || '').trim().replace(/\/+$/, '');
+  return def;
 }
 
 export async function getSupabaseConfig() {

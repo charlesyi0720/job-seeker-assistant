@@ -34,20 +34,27 @@ A Chrome Extension (Manifest V3) that acts as a bilingual BS-Filter for job list
 3. Click **Load unpacked**
 4. Select the `job-seeker-extension/` folder
 
-### 2. Get a Gemini API Key
+### 2. Deploy the Gemini proxy on Vercel (required)
 
-1. Go to [Google AI Studio](https://aistudio.google.com)
-2. Create an API key (free tier available)
-3. Click the extension's **⚙ Settings** icon in Chrome toolbar
-4. Paste your API key and save
+The extension **never** stores your Gemini API key. It calls your own Vercel function `api/analyze-job.js`, which reads `GEMINI_API_KEY` from Vercel env vars.
 
-### 3. Configure Supabase (Optional)
+1. Push this repository to GitHub (it must include the `api/` folder).
+2. In [Vercel](https://vercel.com) → **Add New Project** → import **this** repo (the one with `api/analyze-job.js`).
+   - **Important:** If you already have another project on Vercel with a similar name (e.g. a **Flutter** or **Next.js** app), that deployment **does not** expose `/api/analyze-job`. You must either deploy **this** repo as a separate project or add the `api/` route to that project’s codebase.
+3. **Environment variables** → add `GEMINI_API_KEY` (from [Google AI Studio](https://aistudio.google.com)).
+4. Deploy. Your API base URL will look like: `https://<project-name>.vercel.app/api` (no trailing slash).
 
-1. Create a project at [supabase.com](https://supabase.com)
-2. Open **SQL Editor** in the Supabase dashboard
-3. Run the schema SQL from the Settings page (included in `options/options.html` under "Supabase SQL Schema")
-4. Copy your **Project URL** and **Anon Key** from Project Settings → API
-5. Paste both into the Settings page
+### 3. Point the extension at your API
+
+1. Open the extension **Settings** (from the popup or side panel).
+2. Under **Analysis API (Vercel)**, paste your base URL, e.g. `https://<project-name>.vercel.app/api`.
+3. Save.
+
+Local dev: run `vercel dev` (or your Node server on port 3000) and use `http://localhost:3000/api`.
+
+### 4. Supabase (optional)
+
+If you use Supabase for history sync, configure it in code / env as needed; the simplified Settings UI may not expose all fields.
 
 ---
 
@@ -56,6 +63,10 @@ A Chrome Extension (Manifest V3) that acts as a bilingual BS-Filter for job list
 ```
 job-seeker-extension/
 ├── manifest.json                 # MV3 manifest
+├── package.json                  # Enables Vercel Node + ESM for /api
+├── api/
+│   └── analyze-job.js            # Vercel serverless → Gemini (GEMINI_API_KEY server-side)
+├── vercel.json                   # CORS headers for /api/*
 ├── _locales/                    # i18n strings (en/zh)
 │   ├── en/messages.json
 │   └── zh/messages.json
@@ -64,8 +75,9 @@ job-seeker-extension/
 │   ├── gemini.js               # Gemini API client
 │   └── supabase-client.js      # Supabase persistence
 ├── content/
+│   ├── content-globals.js      # Shared globals for content scripts (no ESM)
 │   ├── content-entry.js        # Content script entry + MutationObserver
-│   ├── dom-injector.js         # Tailwind CDN + overlay injection
+│   ├── dom-injector.js         # Injected styles (no external CDN on host pages)
 │   └── scrapers/
 │       ├── scraper-manager.js  # Platform router
 │       ├── seek-scraper.js     # SEEK.com.au selectors
@@ -103,7 +115,7 @@ scraper-manager.js → platform-specific scraper
 scraped job data ──► service-worker.js (chrome.runtime.sendMessage)
                               │
                               ▼
-                    gemini.js ──► Gemini API
+                    gemini.js ──► your Vercel /api/analyze-job ──► Gemini API
                               │
                               ▼
                     results stored in chrome.storage.local

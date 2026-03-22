@@ -9,7 +9,7 @@
  * This file no longer calls generativelanguage.googleapis.com directly.
  */
 
-import { VERCEL_API_BASE } from '../shared/constants.js';
+import { getApiBaseUrl } from '../shared/storage.js';
 
 // ─── Core API Call ─────────────────────────────────────────────────────────────
 
@@ -20,7 +20,14 @@ import { VERCEL_API_BASE } from '../shared/constants.js';
  * @returns {Promise<any>}
  */
 async function callVercel({ job, resume, mode, lang }) {
-  const url = `${VERCEL_API_BASE}/analyze-job`;
+  const base = await getApiBaseUrl();
+  if (!base) {
+    throw new Error(
+      'API_BASE_URL_MISSING: Open extension Settings and paste your Vercel API base URL (e.g. https://your-project.vercel.app/api). It must be a deployment of this repo’s api/analyze-job.js — not a Flutter/other app on the same domain.'
+    );
+  }
+
+  const url = `${base}/analyze-job`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -30,7 +37,12 @@ async function callVercel({ job, resume, mode, lang }) {
 
   if (!response.ok) {
     const errText = await response.text().catch(() => '');
-    throw new Error(`Vercel API error ${response.status}: ${errText}`);
+    let hint = '';
+    if (response.status === 404) {
+      hint =
+        ' (404 usually means this URL is not the extension API project — deploy the GitHub repo that contains api/analyze-job.js to Vercel, set GEMINI_API_KEY there, then paste that site’s /api base URL in Settings.)';
+    }
+    throw new Error(`Vercel API error ${response.status}: ${errText}${hint}`);
   }
 
   const data = await response.json();

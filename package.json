@@ -1,0 +1,9 @@
+{
+  "name": "job-seeker-bs-filter",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "description": "Chrome extension + Vercel serverless proxy (api/analyze-job.js) for Gemini job analysis."
+}

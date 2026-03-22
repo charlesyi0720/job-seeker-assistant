@@ -8,6 +8,7 @@ import { STORAGE_KEYS, LANGUAGE_PREF } from '../shared/constants.js';
 import { setAll, getAll } from '../shared/storage.js';
 
 // DOM Refs
+const $apiBase    = document.getElementById('opt-api-base');
 const $resume     = document.getElementById('opt-resume');
 const $langSelect = document.getElementById('opt-lang-select');
 const $btnSave    = document.getElementById('opt-save');
@@ -16,8 +17,19 @@ const $toastText  = document.getElementById('opt-toast-text');
 
 // ─── Load ──────────────────────────────────────────────────────────────────────
 
+function normalizeApiBase(raw) {
+  return String(raw || '')
+    .trim()
+    .replace(/\/+$/, '');
+}
+
 async function loadSettings() {
-  const values = await getAll([STORAGE_KEYS.RESUME_TEXT, STORAGE_KEYS.LANGUAGE_PREF]);
+  const values = await getAll([
+    STORAGE_KEYS.API_BASE_URL,
+    STORAGE_KEYS.RESUME_TEXT,
+    STORAGE_KEYS.LANGUAGE_PREF,
+  ]);
+  $apiBase.value    = normalizeApiBase(values[STORAGE_KEYS.API_BASE_URL]);
   $resume.value     = values[STORAGE_KEYS.RESUME_TEXT] || '';
   $langSelect.value = values[STORAGE_KEYS.LANGUAGE_PREF] || LANGUAGE_PREF.AUTO;
 }
@@ -29,8 +41,9 @@ async function saveSettings() {
   $btnSave.textContent = 'Saving...';
   try {
     await setAll({
-      [STORAGE_KEYS.RESUME_TEXT]:    $resume.value,
-      [STORAGE_KEYS.LANGUAGE_PREF]:  $langSelect.value,
+      [STORAGE_KEYS.API_BASE_URL]:  normalizeApiBase($apiBase.value),
+      [STORAGE_KEYS.RESUME_TEXT]:   $resume.value,
+      [STORAGE_KEYS.LANGUAGE_PREF]: $langSelect.value,
     });
     toast('Settings saved!');
   } catch (err) {
