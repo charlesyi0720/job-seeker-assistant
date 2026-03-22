@@ -12,7 +12,7 @@
  * Body: { job: { title, company, description }, resume?: string, mode: string, lang: 'en'|'zh' }
  */
 
-const GEMINI_MODEL = 'gemini-1.5-pro';
+const GEMINI_MODEL = 'gemini-3.1-flash-lite';
 const GEMINI_BASE = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 const CORS_HEADERS = {
