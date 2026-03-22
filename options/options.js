@@ -6,8 +6,7 @@
 import { STORAGE_KEYS, LANGUAGE_PREF } from '../shared/constants.js';
 import { setAll, getAll } from '../shared/storage.js';
 
-const PDFJS_WORKER_SRC =
-  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const PDFJS_WORKER_SRC = '../vendor/pdf.worker.min.js';
 
 /**
  * PDF.js legacy script (in options.html <head>) exposes the API on a few possible globals.

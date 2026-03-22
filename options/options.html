@@ -20,8 +20,8 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .spin { display: inline-block; animation: spin 0.9s linear infinite; }
   </style>
-  <!-- PDF.js legacy build — exposes global pdfjsLib (required before options.js module runs) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- PDF.js — local vendor files; worker loaded inside options.js -->
+  <script src="../vendor/pdf.min.js"></script>
 </head>
 <body class="bg-gray-50 min-h-screen py-8 px-4">
 
