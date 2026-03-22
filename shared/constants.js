@@ -7,7 +7,7 @@
 // During local dev: http://localhost:3000/api
 // After deploying to Vercel, replace with your actual URL e.g.:
 //   https://job-seeker-assistant.vercel.app/api
-export const VERCEL_API_BASE = 'http://localhost:3000/api';
+export const VERCEL_API_BASE = 'https://job-seeker-assistant.vercel.app/api';
 
 export const PLATFORM_HOSTNAMES = {
   SEEK: 'seek.com.au',

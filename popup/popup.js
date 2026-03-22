@@ -5,23 +5,21 @@
 
 import { MESSAGE_TYPES, RESUME_PREVIEW_LENGTH } from '../shared/constants.js';
 import { t, getCurrentLanguage } from '../shared/i18n.js';
-import { getApiKey, getResume } from '../shared/storage.js';
+import { getResume } from '../shared/storage.js';
 
 // ─── DOM Refs ──────────────────────────────────────────────────────────────────
 
-const $openText    = document.getElementById('popup-open-text');
-const $title       = document.getElementById('popup-title');
+const $openText       = document.getElementById('popup-open-text');
+const $title          = document.getElementById('popup-title');
 const $resumeHeading  = document.getElementById('popup-resume-heading');
 const $resumeContent  = document.getElementById('popup-resume-content');
 const $noResume       = document.getElementById('popup-no-resume');
 const $historyHeading = document.getElementById('popup-history-heading');
 const $historyList    = document.getElementById('popup-history-list');
-const $noHistory      = document.getElementById('popup-no-history');
-const $apiWarning     = document.getElementById('popup-api-warning');
-const $apiWarningText = document.getElementById('popup-api-warning-text');
-const $openPanel      = document.getElementById('popup-open-panel');
-const $openSettings   = document.getElementById('popup-open-settings');
-const $popupSettings  = document.getElementById('popup-settings');
+const $noHistory     = document.getElementById('popup-no-history');
+const $openPanel     = document.getElementById('popup-open-panel');
+const $openSettings  = document.getElementById('popup-open-settings');
+const $popupSettings = document.getElementById('popup-settings');
 
 let currentLang = 'en';
 
@@ -30,30 +28,17 @@ let currentLang = 'en';
 async function init() {
   currentLang = await getCurrentLanguage();
   applyLabels();
-  await Promise.all([checkApiKey(), renderResume(), renderHistory()]);
+  await Promise.all([renderResume(), renderHistory()]);
 }
 
 function applyLabels() {
-  const lang = currentLang;
-  $title.textContent = t('app_name', lang);
-  $openText.textContent = t('open_sidepanel', lang);
-  $resumeHeading.textContent = t('resume_preview', lang);
-  $historyHeading.textContent = t('recent_analyses', lang);
-  $noResume.textContent = t('no_resume', lang);
-  $noHistory.textContent = t('no_history', lang);
-  $apiWarningText.textContent = t('api_key_missing', lang);
-  $openSettings.textContent = t('open_settings', lang);
-}
-
-// ─── API Key Warning ───────────────────────────────────────────────────────────
-
-async function checkApiKey() {
-  const key = await getApiKey();
-  if (!key) {
-    $apiWarning.classList.remove('hidden');
-  } else {
-    $apiWarning.classList.add('hidden');
-  }
+  $title.textContent          = t('app_name', currentLang);
+  $openText.textContent      = t('open_sidepanel', currentLang);
+  $resumeHeading.textContent  = t('resume_preview', currentLang);
+  $historyHeading.textContent = t('recent_analyses', currentLang);
+  $noResume.textContent      = t('no_resume', currentLang);
+  $noHistory.textContent     = t('no_history', currentLang);
+  $openSettings.textContent  = t('open_settings', currentLang);
 }
 
 // ─── Resume Preview ────────────────────────────────────────────────────────────
