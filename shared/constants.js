@@ -6,8 +6,8 @@
  *   - background/service-worker.js  (manifest: "type": "module")
  *   - popup/popup.js               (script type="module" in HTML)
  *   - sidepanel/sidepanel.js       (script type="module" in HTML)
- *   - content scripts              (loaded via chrome.runtime.getURL() as a
- *     module script in the manifest inline loader — see content-entry.js)
+ *   - content scripts              use content/content-globals.js (classic
+ *     script, duplicated subset — no import/export in content world)
  *
  * Do NOT list this file in manifest.json content_scripts directly, as
  * content scripts do not support import/export syntax.

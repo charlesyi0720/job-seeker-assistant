@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_app_name__",
   "description": "__MSG_app_description__",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "default_locale": "en",
   "icons": {
     "16": "icons/icon16.svg",
@@ -34,6 +34,7 @@
         "*://*/*"
       ],
       "js": [
+        "content/content-globals.js",
         "content/scrapers/scraper-manager.js",
         "content/scrapers/seek-scraper.js",
         "content/scrapers/linkedin-scraper.js",
@@ -66,7 +67,6 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "shared/constants.js",
         "styles/custom.css",
         "icons/*"
       ],

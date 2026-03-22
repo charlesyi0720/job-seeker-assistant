@@ -4,46 +4,29 @@
  * Runs once per page load.
  */
 
-const TAILWIND_CDN = 'https://cdn.tailwindcss.com';
-const GOOGLE_FONTS = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
-
 /**
- * Inject a <link> or <style> tag into <head>.
- * @param {'link' | 'style'} tag
+ * Inject a <style> tag into <head>.
  * @param {Record<string,string>} attrs
- * @param {string} [innerText]
+ * @param {string} innerText
  */
-function injectHead(tag, attrs, innerText = '') {
+function injectHead(attrs, innerText) {
   if (document.querySelector(`[data-jse-injected="${attrs['data-jse-injected'] || ''}"]`)) return;
-  const el = document.createElement(tag);
+  const el = document.createElement('style');
   Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
   if (innerText) el.textContent = innerText;
   document.head.appendChild(el);
 }
 
-/** Inject Tailwind CDN (loads synchronously for zero-FOUC) */
-function loadTailwind() {
-  injectHead('script', {
-    'data-jse-injected': 'tailwind-cdn',
-    src: TAILWIND_CDN,
-  });
-  injectHead('link', {
-    'data-jse-injected': 'google-fonts',
-    rel: 'stylesheet',
-    href: GOOGLE_FONTS,
-  });
-}
-
-/** Inject our custom CSS overrides */
+/** Inject minimal self-contained CSS — no external CDN needed */
 function injectCustomCSS() {
-  injectHead('style', {
+  injectHead({
     'data-jse-injected': 'jse-custom-css',
   }, `
     #${OVERLAY_ROOT_ID} *, #${OVERLAY_ROOT_ID} *::before, #${OVERLAY_ROOT_ID} *::after {
       box-sizing: border-box;
     }
     #${OVERLAY_ROOT_ID} {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       -webkit-font-smoothing: antialiased;
     }
     .jse-toast {
@@ -84,18 +67,17 @@ function showToast(message, type = 'success', duration = 2500) {
   if (existing) existing.remove();
 
   const toast = document.createElement('div');
-  toast.className = `jse-toast${type === 'error' ? ' error' : ''}`;
+  toast.className = 'jse-toast' + (type === 'error' ? ' error' : '');
   toast.textContent = message;
   document.body.appendChild(toast);
 
-  setTimeout(() => {
+  setTimeout(function() {
     toast.style.animation = 'jse-toast-out 0.2s ease-in forwards';
-    setTimeout(() => toast.remove(), 200);
+    setTimeout(function() { toast.remove(); }, 200);
   }, duration);
 }
 
 /** Main initialisation — call once from content-entry.js */
 function initInjector() {
-  loadTailwind();
   injectCustomCSS();
 }

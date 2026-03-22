@@ -79,7 +79,7 @@ function cleanText(el) {
 }
 
 /**
- * @returns {import('./scraper-manager.js').ScrapedJob}
+ * @returns {Object | null} Scraped job or null
  */
 function scrapeGeneric() {
   const results = {};

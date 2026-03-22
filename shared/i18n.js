@@ -10,9 +10,11 @@ import { getLanguagePref, getSessionLang, setSessionLang } from './storage.js';
 // In-memory bilingual map used when chrome.i18n is not available (content scripts)
 const LOCALIZED_STRINGS = {
   en: {
+    app_name: 'Job Seeker BS Filter',
     analyzing: 'Analyzing job description...',
     no_job: 'No job listing detected on this page.',
-    no_job_hint: 'Navigate to a job listing on SEEK or LinkedIn to see the analysis.',
+    no_job_hint:
+      'Open a job posting (SEEK, LinkedIn, or most company career pages). If text is still missing, click Retry after the page finishes loading.',
     fluff_score: 'Fluff Score',
     fluff_score_sub: 'Corporate Jargon Density',
     buzzword_factors: 'BS Factor Breakdown',
@@ -79,9 +81,11 @@ const LOCALIZED_STRINGS = {
     sentiment_negative: 'What people dislike',
   },
   zh: {
+    app_name: '求职废话过滤器',
     analyzing: '正在分析职位描述...',
     no_job: '未检测到职位信息',
-    no_job_hint: '请打开 Seek 或 LinkedIn 上的招聘页面以查看分析结果。',
+    no_job_hint:
+      '请打开职位详情页（Seek、LinkedIn 或大多数公司招聘页）。若仍无内容，请等页面加载完后再点「重新分析」。',
     fluff_score: '废话指数',
     fluff_score_sub: '企业黑话密度',
     buzzword_factors: '套路解析',

@@ -96,7 +96,7 @@ function extractDescription() {
 /**
  * Main SEEK scraper function.
  * Falls back to generic scraper if page doesn't look like a SEEK job.
- * @returns {import('./scraper-manager.js').ScrapedJob | null}
+ * @returns {Object | null} Scraped job or null
  */
 function scrapeSeek() {
   if (!isSeekJobPage()) {

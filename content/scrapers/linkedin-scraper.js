@@ -114,7 +114,7 @@ function extractDescription() {
 }
 
 /**
- * @returns {import('./scraper-manager.js').ScrapedJob | null}
+ * @returns {Object | null} Scraped job or null
  */
 function scrapeLinkedIn() {
   if (!isLinkedInJobPage()) return null;

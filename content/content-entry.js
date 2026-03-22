@@ -3,25 +3,9 @@
  * Content script entry point.
  * Sets up MutationObserver for SPAs, runs scraper, sends data to service worker.
  *
- * IMPORTANT: shared/constants.js cannot be listed in manifest.json content_scripts
- * (Chrome MV3 forbids import/export in content scripts). Instead we load it here
- * as a module script via chrome.runtime.getURL() so its exports are available to
- * all content scripts in the same isolated JS world.
+ * Globals (PLATFORM_HOSTNAMES, MESSAGE_TYPES, OVERLAY_ROOT_ID, FAB_BUTTON_ID)
+ * are defined in content/content-globals.js (loaded first in manifest).
  */
-
-/**
- * Load shared/constants.js as a module script so its ESM exports are
- * accessible to all subsequent code in this content script.
- * @returns {Promise<typeof import('../shared/constants.js')>}
- */
-async function loadConstants() {
-  const src = chrome.runtime.getURL('shared/constants.js');
-  const mod = await import(/* @kEEP URL */ src);
-  return mod;
-}
-
-// All shared imports resolved after loadConstants()
-let MESSAGE_TYPES, OVERLAY_ROOT_ID, FAB_BUTTON_ID, initInjector, scrapeCurrentPage;
 
 /** Debounce helper to avoid re-scraping on rapid DOM mutations */
 function debounce(fn, delay = 500) {
@@ -55,7 +39,6 @@ function runScraper() {
   const job = scrapeCurrentPage();
   if (job) {
     sendToServiceWorker(job);
-    // Notify the side panel / overlay if they need to refresh
     window.postMessage({ type: 'JSE_JOB_SCRAPED', payload: job }, '*');
   }
   return job;
@@ -65,7 +48,6 @@ function runScraper() {
 const onMutation = debounce(() => {
   const job = runScraper();
   if (job) {
-    // Trigger overlay update
     window.postMessage({ type: 'JSE_JOB_UPDATED', payload: job }, '*');
   }
 }, 800);
@@ -153,27 +135,19 @@ function showFloatingFab(jobFound) {
   fab.style.display = jobFound ? 'flex' : 'none';
 }
 
-/** Initialise everything — called after constants are loaded */
-async function init(ns) {
-  MESSAGE_TYPES    = ns.MESSAGE_TYPES;
-  OVERLAY_ROOT_ID  = ns.OVERLAY_ROOT_ID;
-  FAB_BUTTON_ID    = ns.FAB_BUTTON_ID;
-
+function init() {
   ensureOverlayRoot();
-  initInjector(); // global from dom-injector.js (loaded before this file)
+  initInjector();
 
-  // Give the page a moment to settle (SPAs often render late)
   const initialJob = runScraper();
   showFloatingFab(!!initialJob);
 
-  // Watch for SPA route changes
   const observer = new MutationObserver(onMutation);
   observer.observe(document.body, {
     childList: true,
     subtree: true,
   });
 
-  // Also listen for URL changes (pushState navigation)
   let lastUrl = window.location.href;
   const urlObserver = new MutationObserver(() => {
     if (window.location.href !== lastUrl) {
@@ -181,10 +155,11 @@ async function init(ns) {
       onMutation();
     }
   });
-  urlObserver.observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ['href'] });
+  urlObserver.observe(document.documentElement, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['href'],
+  });
 }
 
-// Load constants then kick off everything
-loadConstants().then(ns => init(ns)).catch(err => {
-  console.error('[JSE content-entry] Failed to load constants:', err);
-});
+init();
