@@ -34,6 +34,7 @@
         "*://*/*"
       ],
       "js": [
+        "shared/constants.js",
         "content/scrapers/scraper-manager.js",
         "content/scrapers/seek-scraper.js",
         "content/scrapers/linkedin-scraper.js",

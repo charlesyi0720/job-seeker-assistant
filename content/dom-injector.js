@@ -4,8 +4,6 @@
  * Runs once per page load.
  */
 
-import { OVERLAY_ROOT_ID } from '../shared/constants.js';
-
 const TAILWIND_CDN = 'https://cdn.tailwindcss.com';
 const GOOGLE_FONTS = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
 
@@ -25,13 +23,10 @@ function injectHead(tag, attrs, innerText = '') {
 
 /** Inject Tailwind CDN (loads synchronously for zero-FOUC) */
 function loadTailwind() {
-  // We inject a style tag with @tailwind base/components/utilities directives
-  // using the CDN's JS API approach: load the script then use the config
   injectHead('script', {
     'data-jse-injected': 'tailwind-cdn',
     src: TAILWIND_CDN,
   });
-  // Also inject Inter font
   injectHead('link', {
     'data-jse-injected': 'google-fonts',
     rel: 'stylesheet',
@@ -44,7 +39,6 @@ function injectCustomCSS() {
   injectHead('style', {
     'data-jse-injected': 'jse-custom-css',
   }, `
-    /* Tailwind reset compatibility */
     #${OVERLAY_ROOT_ID} *, #${OVERLAY_ROOT_ID} *::before, #${OVERLAY_ROOT_ID} *::after {
       box-sizing: border-box;
     }
@@ -52,7 +46,6 @@ function injectCustomCSS() {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-    /* Floating notification toast */
     .jse-toast {
       position: fixed;
       bottom: 88px;
@@ -86,7 +79,7 @@ function injectCustomCSS() {
  * @param {'success'|'error'} [type]
  * @param {number} [duration=2500]
  */
-export function showToast(message, type = 'success', duration = 2500) {
+function showToast(message, type = 'success', duration = 2500) {
   const existing = document.querySelector('.jse-toast');
   if (existing) existing.remove();
 
@@ -102,7 +95,7 @@ export function showToast(message, type = 'success', duration = 2500) {
 }
 
 /** Main initialisation — call once from content-entry.js */
-export function initInjector() {
+function initInjector() {
   loadTailwind();
   injectCustomCSS();
 }

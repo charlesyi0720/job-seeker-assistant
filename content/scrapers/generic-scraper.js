@@ -81,7 +81,7 @@ function cleanText(el) {
 /**
  * @returns {import('./scraper-manager.js').ScrapedJob}
  */
-export function scrapeGeneric() {
+function scrapeGeneric() {
   const results = {};
 
   for (const { selector, field, weight } of CANDIDATES) {

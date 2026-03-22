@@ -7,9 +7,13 @@
 // During local dev: http://localhost:3000/api
 // After deploying to Vercel, replace with your actual URL e.g.:
 //   https://job-seeker-assistant.vercel.app/api
-export const VERCEL_API_BASE = 'https://job-seeker-assistant.vercel.app/api';
+// ── Vercel Backend ──────────────────────────────────────────────────────────────
+// During local dev: http://localhost:3000/api
+// After deploying to Vercel, replace with your actual URL e.g.:
+//   https://job-seeker-assistant.vercel.app/api
+const VERCEL_API_BASE = 'https://job-seeker-assistant.vercel.app/api';
 
-export const PLATFORM_HOSTNAMES = {
+const PLATFORM_HOSTNAMES = {
   SEEK: 'seek.com.au',
   SEEK_CAREERS: 'seek.co.nz',
   LINKEDIN: 'linkedin.com',
@@ -18,17 +22,14 @@ export const PLATFORM_HOSTNAMES = {
   JORA_AU: 'au.jora.com',
 };
 
-export const GEMINI_CONFIG = {
-  MODEL: 'gemini-1.5-pro',
-  // Kept for reference only — actual calls go through the Vercel proxy.
-  BASE_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent',
+const GEMINI_CONFIG = {
+  MODEL: 'gemini-3.1-flash-lite',
+  BASE_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent',
   MAX_TOKENS: 1200,
   TEMPERATURE: 0.2,
 };
 
-export const STORAGE_KEYS = {
-  // NOTE: GEMINI_API_KEY is no longer stored in the extension.
-  // It is set as an environment variable in the Vercel dashboard.
+const STORAGE_KEYS = {
   SUPABASE_URL: 'supabase_url',
   SUPABASE_ANON_KEY: 'supabase_anon_key',
   LANGUAGE_PREF: 'language_pref',
@@ -39,19 +40,19 @@ export const STORAGE_KEYS = {
   SESSION_LANG: 'session_lang',
 };
 
-export const LANGUAGE_PREF = {
+const LANGUAGE_PREF = {
   AUTO: 'auto',
   EN: 'en',
   ZH: 'zh',
 };
 
-export const SEVERITY = {
+const SEVERITY = {
   LOW: 'low',
   MEDIUM: 'medium',
   HIGH: 'high',
 };
 
-export const BUZZWORD_CATEGORIES = {
+const BUZZWORD_CATEGORIES = {
   ROLE_AMBIGUITY: 'role_ambiguity',
   CULTURE_VAGUENESS: 'culture_vagueness',
   AI_WFH_OBFUSCATION: 'ai_wfh_obfuscation',
@@ -60,7 +61,7 @@ export const BUZZWORD_CATEGORIES = {
   AI_RISK_INDEX: 'ai_risk_index',
 };
 
-export const MESSAGE_TYPES = {
+const MESSAGE_TYPES = {
   ANALYZE_JOB: 'ANALYZE_JOB',
   JOB_ANALYZED: 'JOB_ANALYZED',
   ANALYZER_ERROR: 'ANALYZER_ERROR',
@@ -79,14 +80,14 @@ export const MESSAGE_TYPES = {
   REPUTATION_FETCHED: 'REPUTATION_FETCHED',
 };
 
-export const SIDEPANEL_ID = 'jse-sidepanel-root';
-export const OVERLAY_ROOT_ID = 'jse-overlay-root';
-export const FAB_BUTTON_ID = 'jse-fab-button';
+const SIDEPANEL_ID = 'jse-sidepanel-root';
+const OVERLAY_ROOT_ID = 'jse-overlay-root';
+const FAB_BUTTON_ID = 'jse-fab-button';
 
-export const SCORE_THRESHOLDS = {
+const SCORE_THRESHOLDS = {
   LOW: 40,
   HIGH: 70,
 };
 
-export const HISTORY_LIMIT = 50;
-export const RESUME_PREVIEW_LENGTH = 200;
+const HISTORY_LIMIT = 50;
+const RESUME_PREVIEW_LENGTH = 200;

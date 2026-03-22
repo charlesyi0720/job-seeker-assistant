@@ -3,8 +3,6 @@
  * Extracts job data from seek.com.au job detail pages.
  */
 
-import { scrapeGeneric } from './generic-scraper.js';
-
 /**
  * SEEK-specific selectors.
  * These use data-automation attributes which are stable.
@@ -100,7 +98,7 @@ function extractDescription() {
  * Falls back to generic scraper if page doesn't look like a SEEK job.
  * @returns {import('./scraper-manager.js').ScrapedJob | null}
  */
-export function scrapeSeek() {
+function scrapeSeek() {
   if (!isSeekJobPage()) {
     return null;
   }

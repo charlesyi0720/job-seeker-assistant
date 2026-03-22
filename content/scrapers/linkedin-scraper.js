@@ -4,8 +4,6 @@
  * Handles both the legacy and newer "jobs-details-journey" UI patterns.
  */
 
-import { scrapeGeneric } from './generic-scraper.js';
-
 /**
  * LinkedIn uses increasingly dynamic selectors.
  * These cover the 2024–2025 jobs-detail pages and legacy pages.
@@ -118,7 +116,7 @@ function extractDescription() {
 /**
  * @returns {import('./scraper-manager.js').ScrapedJob | null}
  */
-export function scrapeLinkedIn() {
+function scrapeLinkedIn() {
   if (!isLinkedInJobPage()) return null;
 
   // Prefer the new journey UI selectors

@@ -4,10 +4,6 @@
  * Sets up MutationObserver for SPAs, runs scraper, sends data to service worker.
  */
 
-import { scrapeCurrentPage } from './scrapers/scraper-manager.js';
-import { initInjector } from './dom-injector.js';
-import { MESSAGE_TYPES, OVERLAY_ROOT_ID, FAB_BUTTON_ID } from '../shared/constants.js';
-
 /** Debounce helper to avoid re-scraping on rapid DOM mutations */
 function debounce(fn, delay = 500) {
   let timer;
